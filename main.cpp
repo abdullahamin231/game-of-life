@@ -57,74 +57,61 @@ public:
         }
     }
 
-    int functionOfDeath(int i, int j){
-        int count = 0;
-        if(i > 0 && j > 0 && p[i-1][j-1]){
-            count++;
-        }
-        if(i > 0 && p[i-1][j]){
-            count++;
-        }
-        if(i > 0 && j < 49 && p[i-1][j+1]){
-            count++;
-        }
-        if(j > 0 && p[i][j-1]){
-            count++;
-        }
-        if(j < 49 && p[i][j+1]){
-            count++;
-        }
-        if(i < 49 && j > 0 && p[i+1][j-1]){
-            count++;
-        }
-        if(i < 49 && p[i+1][j]){
-            count++;
-        }
-        if(i < 49 && j < 49 && p[i+1][j+1]){
-            count++;
-        }
-        if(p[i][j]){
-            if(count < 2){
-                return 1;
-            } else if(count > 3){
-                return 2;
-            } else {
-                return 3;
+   int functionOfLife(int i, int j) {
+    int count = 0;
+
+    for (int x = -1; x <= 1; ++x) {
+        for (int y = -1; y <= 1; ++y) {
+            int ni = i + x;
+            int nj = j + y;
+
+            if (ni >= 0 && ni < 50 && nj >= 0 && nj < 50 && !(x == 0 && y == 0)) {
+                count += p[ni][nj] ? 1 : 0;
             }
+        }
+    }
+
+    if (p[i][j]) {
+        if (count < 2 || count > 3) {
+            return 1; // Cell dies
         } else {
-            if(count == 3){
-                return 4;
+            return 2; // Cell survives
+        }
+    } else {
+        if (count == 3) {
+            return 3; // New cell is born
+        } else {
+            return 0; // Cell remains dead
+        }
+    }
+}
+
+void update() {
+    for (int i = 0; i < 50; ++i) {
+        for (int j = 0; j < 50; ++j) {
+            switch (functionOfLife(i, j)) {
+                case 1:
+                    p[i][j] = false;
+                    break;
+                case 2:
+                    // Cell survives, no change
+                    break;
+                case 3:
+                    p[i][j] = true;
+                    break;
+                case 0:
+                    // Cell remains in its current state
+                    break;
+            }
+
+            if (p[i][j]) {
+                bord[i][j].setFillColor(sf::Color::Red);
             } else {
-                return 0;
+                bord[i][j].setFillColor(sf::Color::White);
             }
         }
     }
-
-    void update(){
-        for(int i = 0; i < 50; i++){
-            for(int j = 0; j < 50; j++){
-                switch(functionOfDeath(i,j)){
-                    case 1:
-                        p[i][j] = false; break;
-                    case 2:
-                        p[i][j] = true; break;
-                    case 3:
-                        p[i][j] = false; break;
-                    case 4:
-                        p[i][j] = true; break;
-                    case 0:
-                        break;
-
-                }
-                if(p[i][j]){
-                    bord[i][j].setFillColor(Color::Red);
-                } else {
-                    bord[i][j].setFillColor(Color::White);
-                }
-            }
-        }
-    }
-
+}
 
 
     void draw(RenderWindow& window){
