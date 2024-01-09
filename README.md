@@ -28,7 +28,7 @@ Ensure you have the SFML library installed on your system. You can compile the p
 
 ```bash
 g++ -o main main.cpp -lsfml-graphics -lsfml-window -lsfml-system
-
+```
 ![App Screenshot](https://snipboard.io/9BS1Fu.jpg)
 ![App Screenshot](https://snipboard.io/vqnVM5.jpg)
 ![App Screenshot](https://snipboard.io/x1dUy0.jpg)
