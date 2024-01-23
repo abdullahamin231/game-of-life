@@ -232,7 +232,7 @@ int main()
     Board board;
     bool inMenu = true, init = false, start = false;
     Clock timer;
-
+	float time = 0.25f;
     while (window.isOpen())
     {
         Event event;
@@ -289,12 +289,16 @@ int main()
                 } else if (start && !inMenu && !init){
                     if(event.key.code == Keyboard::Escape){
                         inMenu = true; init = false; start = false;
+                    } else if (event.key.code == Keyboard::Down){
+                    	time -= 0.1;
+                    } else if(event.key.code == Keyboard::Up){
+                    	time += 0.1;
                     }
                 }
             } if (event.type == Event::MouseButtonPressed && init){
                     if (event.mouseButton.button == Mouse::Left) {
                         int x = Mouse::getPosition(window).x / 20;
-                        int y = Mouse::getPosition(window).y / 20;
+                        int y = Mouse::getPosition(window).y / 20;	
                         board.initset(x,y);
                         fstream file("config.txt");
                         board.print(file);
@@ -318,7 +322,7 @@ int main()
             window.draw(cursorText);
         }
         if(start && !init){
-            if(timer.getElapsedTime().asSeconds() > 0.25f ){
+            if(timer.getElapsedTime().asSeconds() > time ){
                 board.update();
                 timer.restart();
             }
